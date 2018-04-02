@@ -1,0 +1,19 @@
+main {
+    width: 90%;
+}
+
+.click-counter {
+    text-align: center;
+}
+
+.cats {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.cat-img {
+    width: 45%;
+    display: block;
+    margin: 0 auto;
+}
