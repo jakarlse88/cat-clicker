@@ -1,8 +1,6 @@
 /* eslint-env jquery */
 
 /* Variables */
-let counter = 0;
-
 const cats = [ 
 		{
 			name: 'simba',
