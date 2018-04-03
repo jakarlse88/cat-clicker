@@ -117,7 +117,7 @@ gulp.task('default', ['run', 'watch', 'connect']);
 // webserver w/ livereload
 gulp.task('connect', function() {
 	connect.server({
-		root: 'src',
+		root: 'build',
 		livereload: true
 	});
 });
