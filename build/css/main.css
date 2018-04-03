@@ -1,5 +1,13 @@
+body {
+  font-size: 100%; }
+
 main {
-  width: 90%; }
+  width: 90%;
+  border: 1px solid red;
+  margin: 0 auto; }
+
+header {
+  text-align: center; }
 
 .click-counter {
   text-align: center; }
@@ -16,6 +24,30 @@ main {
       flex-wrap: wrap; }
 
 .cat-img {
-  width: 45%;
   display: block;
   margin: 0 auto; }
+
+.cat-img img {
+  max-width: 640px; }
+
+.cat-selection {
+  border: 1px dashed black; }
+
+.cat-selection ul {
+  list-style: none;
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  padding: 0; }
+
+.cat-selection li {
+  display: inline-block;
+  padding: 0 10px;
+  cursor: pointer;
+  font-size: 1.2em; }
+
+.cat-selection li:hover {
+  color: pink; }
+
+.hide {
+  display: none; }
