@@ -18,6 +18,7 @@ const cats = [
 		name: 'bell',
 	}
 ];
+let openCat;
 
 /* Run on DOM ready 
 */
@@ -53,9 +54,18 @@ $(function () {
 		$(e.currentTarget).find('figcaption').text(++currentCounter); 
 	});
 
+	/* Show selected cat, ensure others are hidden
+	 */
 	$('.cat-selection li').on('click', (e) => {
 		let id = `#${$(e.currentTarget).text()}`;
-		console.log($(id));
-		$(id).parent().toggleClass('hide');
+
+		if (openCat === null) {
+			$(id).parent().toggleClass('hide');
+			openCat = $(id).parent();
+		} else {
+			$(openCat).toggleClass('hide');
+			$(id).parent().toggleClass('hide');
+			openCat = $(id).parent();
+		}
 	});
 });
