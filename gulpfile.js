@@ -13,6 +13,7 @@ const gulp = require('gulp'),
 	autoprefixer = require('autoprefixer'),
 	mqpacker = require('css-mqpacker'),
 	cssnano = require('cssnano'),
+	connect = require('gulp-connect'),
 	imagemin = require('gulp-imagemin');
 
 	// folders
@@ -27,14 +28,16 @@ gulp.task('images', function() {
 	return gulp.src(folder.src + 'images/**/*')
 		.pipe(newer(out))
 		.pipe(imagemin({ optimizationLevel: 5 }))
-		.pipe(gulp.dest(out));
+		.pipe(gulp.dest(out))
+		.pipe(connect.reload());
 });
   
 // HTML processing
 gulp.task('html', ['images'], function() {
-	var out = folder.build + 'html/',
-		page = gulp.src(folder.src + 'html/**/*')
-			.pipe(newer(out));
+	var out = folder.build,
+		page = gulp.src(folder.src + 'index.html')
+			.pipe(newer(out))
+			.pipe(connect.reload());
   
 	// minify production code
 	if (!devBuild) {
@@ -49,7 +52,8 @@ gulp.task('js', function() {
 
 	var jsbuild = gulp.src(folder.src + 'js/**/*')
 		.pipe(deporder())
-		.pipe(concat('main.js'));
+		.pipe(concat('main.js'))
+		.pipe(connect.reload());
   
 	if (!devBuild) {
 		jsbuild = jsbuild
@@ -82,7 +86,8 @@ gulp.task('css', ['images'], function() {
 			errLogToConsole: true
 		}))
 		.pipe(postcss(postCssOpts))
-		.pipe(gulp.dest(folder.build + 'css/'));
+		.pipe(gulp.dest(folder.build + 'css/'))
+		.pipe(connect.reload());
   
 });
   
@@ -96,7 +101,7 @@ gulp.task('watch', function() {
 	gulp.watch(folder.src + 'images/**/*', ['images']);
   
 	// html changes
-	gulp.watch(folder.src + 'html/**/*', ['html']);
+	gulp.watch(folder.src + 'index.html', ['html']);
   
 	// javascript changes
 	gulp.watch(folder.src + 'js/**/*', ['js']);
@@ -107,6 +112,12 @@ gulp.task('watch', function() {
 });
 
 // default task
-gulp.task('default', ['run', 'watch']);
+gulp.task('default', ['run', 'watch', 'connect']);
 
-  
+// webserver w/ livereload
+gulp.task('connect', function() {
+	connect.server({
+		root: 'src',
+		livereload: true
+	});
+});
