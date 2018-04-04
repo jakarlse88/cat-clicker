@@ -12,7 +12,7 @@ header {
 .click-counter {
   text-align: center; }
 
-.cats {
+.cat-display {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

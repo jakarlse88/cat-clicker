@@ -18,10 +18,13 @@
   "homepage": "https://github.com/jakarlse88/cat-clicker#readme",
   "devDependencies": {
     "autoprefixer": "^8.2.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "css-mqpacker": "^6.0.2",
     "cssnano": "^3.10.0",
     "eslint": "^4.19.1",
     "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.5.0",
     "gulp-deporder": "^1.1.0",

@@ -1,71 +1,113 @@
 /* eslint-env jquery */
 
-/* Variables */
-const cats = [ 
-	{
-		name: 'simba',
-	},
-	{
-		name: 'nala',
-	},
-	{
-		name: 'luna',
-	},
-	{
-		name: 'daisy',
-	},
-	{
-		name: 'bell',
-	}
-];
-let openCat;
+$(() =>{
 
-/* Run on DOM ready 
-*/
-$(function () {
-	/* Create list of cat names
-	 */
-	(function() {
-		for (let cat of cats) {
-			$('.cat-selection ul').append(`<li>${cat.name}</li>`);
+	const model = {
+
+		catList: [],
+
+		currentCat: '',
+
+		getCat: (name) =>  model.catList.filter(obj => obj.name === name),
+
+		getCatClickCounter: (name) => {
+			let cat = model.getCat(name);
+			return cat[0].clickCounter;
+		},
+
+		incrementClickCounter: (name) => {
+			let cat = model.getCat(name);
+			cat[0].clickCounter++;
+		},
+
+		getAllCats: () => model.catList,
+
+		getCurrentCat: () => model.currentCat,
+
+		setCurrentCat: (cat) => model.currentCat = cat,		
+
+		init: (...cats) => {
+			for (let cat of cats) {
+				model.catList.push( {name: cat, clickCounter: 0} );
+			}
 		}
-	})();
+	};
+
+
+	const octopus = {
+		getCat: (cat) => model.getCat(cat),
+
+		getCatClickCounter: (name) => model.getCatClickCounter(name),
+
+		incrementClickCounter: (name) => model.incrementClickCounter(name),
+
+		getAllCats: () => model.getAllCats(),
+
+		getCurrentCat: () => model.getCurrentCat(),
+
+		setCurrentCat: (cat) => model.currentCat = cat,
+
+		clearCurrentCat: () => model.currentCat = '',
+
+		init: () => {
+			model.init('simba', 'nala', 'luna', 'daisy', 'bell');
+			view.init();
+		}
+	};
+
 	
-	/* Create cat HTML
-	 */
-	(function() {
-		for (let cat of cats) {
-			cat.html = `<figure class="cat-img hide">
-			<p class="cat-name">${cat.name}</p>
-			<img src="/images/${cat.name}.jpg" alt="a cat" id="${cat.name}">
-			<figcaption><p>0</p></figcaption>
-			</figure>`;
-		}
+	const view = {
+		init: () => {
+			this.catSelection = $('.cat-selection ul');
+			this.catDisplay = $('.cat-display');
 
-		for (let cat of cats) {
-			$('.cats').append(cat.html);
-		}
-	})();
+			$(this.catSelection).on('click', (e) => {
+				let id = `#${$(e.target).text()}`;
 
-	/* Increment cat's associated counter on click
-	 */
-	$('.cat-img').on('click', (e) => {
-		let currentCounter = parseInt($(e.currentTarget).find('figcaption').text());
-		$(e.currentTarget).find('figcaption').text(++currentCounter); 
-	});
+				if (octopus.getCurrentCat() === null) {
+					$(id).toggleClass('hide');
+					octopus.setCurrentCat(id);
+				} else {
+					const current = octopus.getCurrentCat();
+					$(current).toggleClass('hide');
+					$(id).toggleClass('hide');
+					octopus.setCurrentCat(id);
+				}
+			});
 
-	/* Show selected cat, ensure others are hidden
-	 */
-	$('.cat-selection li').on('click', (e) => {
-		let id = `#${$(e.currentTarget).text()}`;
+			$('.cat-display').on('click', (e) => {
+				let id = `${$(e.target).parent().attr('id')}`;
 
-		if (openCat === null) {
-			$(id).parent().toggleClass('hide');
-			openCat = $(id).parent();
-		} else {
-			$(openCat).toggleClass('hide');
-			$(id).parent().toggleClass('hide');
-			openCat = $(id).parent();
-		}
-	});
+				octopus.incrementClickCounter(id);
+
+				$(e.target).parent().find('figcaption p').text(octopus.getCatClickCounter(id));
+				
+			});
+
+			view.listRender();
+			view.displayRender();
+		},
+
+		listRender: () => {
+			let htmlStr = '';
+			octopus.getAllCats().forEach((cat) => {
+				htmlStr += '<li>' + cat.name + '</li>';
+			});
+			$('.cat-selection ul').append( htmlStr );
+		},
+
+		displayRender: () => {
+			let catHTML = '';
+			octopus.getAllCats().forEach((cat) => { 
+				catHTML += '<figure class="cat-img hide" id="' + cat.name + '">' +
+						'<p class="cat-name">' + cat.name + '</p>' +
+						'<img src="/images/' + cat.name + '.jpg">' +
+						'<figcaption><p>' + cat.clickCounter + '</p></figcaption>' +
+						'</figure>';
+			});
+			$('.cat-display').append( catHTML );
+		},
+	};
+
+	octopus.init();
 });
