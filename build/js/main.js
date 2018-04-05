@@ -10,7 +10,7 @@ $(() =>{
 
 		getCat: (name) =>  model.catList.filter(obj => obj.name === name),
 
-		setCatName: (name, newName) => {
+		setCatName: function(name, newName) {
 			let cat = model.getCat(name);
 			cat[0].name = newName;
 			return cat[0].name;
@@ -44,7 +44,10 @@ $(() =>{
 
 		init: (...cats) => {
 			for (let cat of cats) {
-				model.catList.push( {name: cat, clickCounter: 0} );
+				model.catList.push( {name: cat, 
+					clickCounter: 0,
+					url: '/images/' + cat + '.jpg'} 
+				);
 			}
 		}
 	};
@@ -88,23 +91,23 @@ $(() =>{
 
 				if (octopus.getCurrentCat() === null) {
 					$(id).toggleClass('hide');
-					octopus.setCurrentCat(id);
+					octopus.setCurrentCat(id.substr(1));
 				} else {
-					const current = octopus.getCurrentCat();
+					const current = '#' + octopus.getCurrentCat();
 					$(current).toggleClass('hide');
 					$(id).toggleClass('hide');
-					octopus.setCurrentCat(id);
+					octopus.setCurrentCat(id.substr(1));
 				}
 			});
 
 			$('.cat-display').on('click', (e) => {
 				let id = `${$(e.target).parent().attr('id')}`;
-
 				
 				if (octopus.getCurrentCat()) {
 					octopus.incrementClickCounter(id);
 				
-					$(e.target).parent().find('figcaption p').text(octopus.getCatClickCounter(id));
+					$(e.target).parent().find('figcaption p')
+						.text(octopus.getCatClickCounter(id));
 				}
 			});
 
@@ -133,23 +136,33 @@ $(() =>{
 				e.preventDefault();
 
 				if (octopus.getCurrentCat()) {
-					let cat = octopus.getCurrentCat().substr(1),
+					let cat = octopus.getCurrentCat(),
 						newName = $('#admin-name').val(),
 						newURL = $('#admin-url').val(),
 						newClicks = parseInt($('#admin-clicks').val());
 
-					console.log(cat, newName, newURL, newClicks);
 
 					if (cat) {
-						cat = octopus.setCatName(cat, newName);
-						octopus.setClickCounter(cat, newClicks);
-						octopus.setCatURL(cat, newURL);
-						console.log(octopus.getAllCats());
+					
+						if ($('#admin-name').val()) {
+							cat = octopus.setCatName(cat, newName);
+							octopus.setCurrentCat(cat);
+						}
+
+						if ($('#admin-url').val()) {
+							octopus.setCatURL(cat, newURL);
+						}
+						
+						if ($('#admin-clicks').val()) {
+							octopus.setClickCounter(cat, newClicks);
+						}
 					} 
 
 					$('#admin-name').val(null),
 					$('#admin-url').val(null),
 					$('#admin-clicks').val(null);
+
+					view.displayRender();
 				}
 			});
 			
@@ -168,11 +181,20 @@ $(() =>{
 			octopus.getAllCats().forEach((cat) => { 
 				catHTML += '<figure class="cat-img hide" id="' + cat.name + '">' +
 						'<p class="cat-name">' + cat.name + '</p>' +
-						'<img src="/images/' + cat.name + '.jpg">' +
+						'<img src="' + cat.url + '">' +
 						'<figcaption><p>' + cat.clickCounter + '</p></figcaption>' +
 						'</figure>';
 			});
-			$('.cat-display').append( catHTML );
+
+			$('.cat-display').html( catHTML );
+
+			if (octopus.getCurrentCat() !== null) {
+				let cat = '#' + octopus.getCurrentCat();
+				
+				if ($(cat).hasClass('hide')) {
+					$(cat).removeClass('hide');
+				}
+			}
 		},
 
 		admBtnRender: () => {
