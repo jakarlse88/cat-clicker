@@ -93,6 +93,11 @@ $(() =>{
 				$('#admin-btn').toggleClass('hide');
 				$('#admin-panel').toggleClass('hide');
 			});
+
+			$('#admin-close').click(() => {
+				$('#admin-panel').toggleClass('hide');
+				$('#admin-btn').toggleClass('hide');
+			});
 		},
 
 		listRender: () => {
@@ -128,6 +133,7 @@ $(() =>{
 							'<input type="text" placeholder="URL" id ="admin-url">' +
 							'<input type="text" placeholder="Clicks" id="admin-clicks">' +
 							'<input type="submit" value="Submit" id="admin-submit">' +
+							'<input type="submit" value="Close" id="admin-close">' +
 						'</form>';
 			$('.admin-panel').append( panelHTML );
 		}
