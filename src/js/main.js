@@ -162,6 +162,8 @@ $(() =>{
 					$('#admin-url').val(null),
 					$('#admin-clicks').val(null);
 
+					$('#admin-panel').toggleClass('hide');
+
 					view.displayRender();
 				}
 			});
