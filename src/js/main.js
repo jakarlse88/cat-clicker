@@ -86,6 +86,8 @@ $(() =>{
 
 			view.listRender();
 			view.displayRender();
+			view.admBtnRender();
+			view.admPanelRender();
 		},
 
 		listRender: () => {
@@ -107,6 +109,23 @@ $(() =>{
 			});
 			$('.cat-display').append( catHTML );
 		},
+
+		admBtnRender: () => {
+			let btnHTML = '<section class="admin">' +
+						'<button id="admin-btn">Admin</button>' +
+						'</section>';
+			$('#page-footer').append( btnHTML );
+		},
+
+		admPanelRender: () => {
+			let panelHTML = '<form>' +
+							'<input type="text" placeholder="Name" id="admin-name">' +
+							'<input type="text" placeholder="URL" id ="admin-url">' +
+							'<input type="text" placeholder="Clicks" id="admin-clicks">' +
+							'<input type="submit" value="Submit" id="admin-submit">' +
+						'</form>';
+			$('#admin-panel').append( panelHTML );
+		}
 	};
 
 	octopus.init();
