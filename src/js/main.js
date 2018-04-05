@@ -6,9 +6,20 @@ $(() =>{
 
 		catList: [],
 
-		currentCat: '',
+		currentCat: null,
 
 		getCat: (name) =>  model.catList.filter(obj => obj.name === name),
+
+		setCatName: (name, newName) => {
+			let cat = model.getCat(name);
+			cat[0].name = newName;
+			return cat[0].name;
+		},
+
+		setCatURL: (name, url) => {
+			let cat = model.getCat(name);
+			cat[0].url = url;
+		},
 
 		getCatClickCounter: (name) => {
 			let cat = model.getCat(name);
@@ -18,6 +29,11 @@ $(() =>{
 		incrementClickCounter: (name) => {
 			let cat = model.getCat(name);
 			cat[0].clickCounter++;
+		},
+
+		setClickCounter: (name, clicks) => {
+			let cat = model.getCat(name);
+			cat[0].clickCounter = clicks;
 		},
 
 		getAllCats: () => model.catList,
@@ -37,9 +53,15 @@ $(() =>{
 	const octopus = {
 		getCat: (cat) => model.getCat(cat),
 
+		setCatName: (name, newName) => model.setCatName(name, newName),
+
+		setCatURL: (name, url) => model.setCatURL(name, url),
+
 		getCatClickCounter: (name) => model.getCatClickCounter(name),
 
 		incrementClickCounter: (name) => model.incrementClickCounter(name),
+
+		setClickCounter: (name, clicks) => model.setClickCounter(name, clicks),
 
 		getAllCats: () => model.getAllCats(),
 
@@ -47,7 +69,7 @@ $(() =>{
 
 		setCurrentCat: (cat) => model.currentCat = cat,
 
-		clearCurrentCat: () => model.currentCat = '',
+		clearCurrentCat: () => model.currentCat = null,
 
 		init: () => {
 			model.init('simba', 'nala', 'luna', 'daisy', 'bell');
@@ -89,15 +111,39 @@ $(() =>{
 			view.admBtnRender();
 			view.admPanelRender();
 			
+			/* Admin btn functionality 
+			 */
 			$('#admin-btn').click(() => {
 				$('#admin-btn').toggleClass('hide');
 				$('#admin-panel').toggleClass('hide');
 			});
 
+			/* Admin panel close btn functionality 
+			 */
 			$('#admin-close').click(() => {
 				$('#admin-panel').toggleClass('hide');
 				$('#admin-btn').toggleClass('hide');
 			});
+
+			/* Admin panel functionality
+			 */
+			$('#admin-panel').submit((e) => {
+				e.preventDefault();
+				let cat = octopus.getCurrentCat().substr(1),
+					newName = $('#admin-name').val(),
+					newURL = $('#admin-url').val(),
+					newClicks = parseInt($('#admin-clicks').val());
+
+				console.log(cat, newName, newURL, newClicks);
+
+				if (cat) {
+					cat = octopus.setCatName(cat, newName);
+					octopus.setClickCounter(cat, newClicks);
+					octopus.setCatURL(cat, newURL);
+					console.log(octopus.getAllCats());
+				} 
+			});
+			
 		},
 
 		listRender: () => {
