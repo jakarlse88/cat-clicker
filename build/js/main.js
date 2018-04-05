@@ -88,6 +88,11 @@ $(() =>{
 			view.displayRender();
 			view.admBtnRender();
 			view.admPanelRender();
+			
+			$('#admin-btn').click(() => {
+				$('#admin-btn').toggleClass('hide');
+				$('#admin-panel').toggleClass('hide');
+			});
 		},
 
 		listRender: () => {
@@ -118,13 +123,13 @@ $(() =>{
 		},
 
 		admPanelRender: () => {
-			let panelHTML = '<form>' +
+			let panelHTML = '<form class="hide" id="admin-panel">' +
 							'<input type="text" placeholder="Name" id="admin-name">' +
 							'<input type="text" placeholder="URL" id ="admin-url">' +
 							'<input type="text" placeholder="Clicks" id="admin-clicks">' +
 							'<input type="submit" value="Submit" id="admin-submit">' +
 						'</form>';
-			$('#admin-panel').append( panelHTML );
+			$('.admin-panel').append( panelHTML );
 		}
 	};
 

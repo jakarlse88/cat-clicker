@@ -1,11 +1,12 @@
 body {
     font-size: 100%;
+    font-family: 'Indie Flower', cursive;
 }
 
 main {
     width: 90%;
-    border: 1px solid red;
     margin: 0 auto;
+    border-top: 1px dashed black;
 }
 
 header {
@@ -20,6 +21,9 @@ header {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    width: 660px;
+    height: 500px;
+    margin: 0 auto;
 }
 
 .cat-name {
@@ -35,10 +39,12 @@ header {
 
 .cat-img img {
     max-width: 640px;
+    max-height: 420px;
 }
 
 .cat-selection {
-    border: 1px dashed black;
+    border-top: 1px dashed black;
+    margin: 1em 0;
 }
 
 .cat-selection ul {
