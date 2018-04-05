@@ -6,6 +6,8 @@ $(() =>{
 
 		catList: [],
 
+		currentCat: '',
+
 		getCat: (name) =>  model.catList.filter(obj => obj.name === name),
 
 		getCatClickCounter: (name) => {
@@ -19,8 +21,6 @@ $(() =>{
 		},
 
 		getAllCats: () => model.catList,
-
-		currentCat: '',
 
 		getCurrentCat: () => model.currentCat,
 
@@ -63,7 +63,6 @@ $(() =>{
 
 			$(this.catSelection).on('click', (e) => {
 				let id = `#${$(e.target).text()}`;
-				console.log(id);
 
 				if (octopus.getCurrentCat() === null) {
 					$(id).toggleClass('hide');

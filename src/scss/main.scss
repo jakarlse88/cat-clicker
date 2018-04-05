@@ -22,6 +22,12 @@ header {
     flex-wrap: wrap;
 }
 
+.cat-name {
+    text-transform: capitalize;
+    font-size: 1.5em;
+    text-align: center;
+}
+
 .cat-img {
     display: block;
     margin: 0 auto;
@@ -44,6 +50,7 @@ header {
 }
 
 .cat-selection li {
+    text-transform: capitalize;
     display: inline-block;
     padding: 0 10px;
     cursor: pointer;
@@ -56,4 +63,9 @@ header {
 
 .hide {
     display: none;
+}
+
+.admin {
+    text-align: center;
+    margin: .5em 1em;
 }
