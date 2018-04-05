@@ -100,10 +100,12 @@ $(() =>{
 			$('.cat-display').on('click', (e) => {
 				let id = `${$(e.target).parent().attr('id')}`;
 
-				octopus.incrementClickCounter(id);
-
-				$(e.target).parent().find('figcaption p').text(octopus.getCatClickCounter(id));
 				
+				if (octopus.getCurrentCat()) {
+					octopus.incrementClickCounter(id);
+				
+					$(e.target).parent().find('figcaption p').text(octopus.getCatClickCounter(id));
+				}
 			});
 
 			view.listRender();
@@ -129,19 +131,26 @@ $(() =>{
 			 */
 			$('#admin-panel').submit((e) => {
 				e.preventDefault();
-				let cat = octopus.getCurrentCat().substr(1),
-					newName = $('#admin-name').val(),
-					newURL = $('#admin-url').val(),
-					newClicks = parseInt($('#admin-clicks').val());
 
-				console.log(cat, newName, newURL, newClicks);
+				if (octopus.getCurrentCat()) {
+					let cat = octopus.getCurrentCat().substr(1),
+						newName = $('#admin-name').val(),
+						newURL = $('#admin-url').val(),
+						newClicks = parseInt($('#admin-clicks').val());
 
-				if (cat) {
-					cat = octopus.setCatName(cat, newName);
-					octopus.setClickCounter(cat, newClicks);
-					octopus.setCatURL(cat, newURL);
-					console.log(octopus.getAllCats());
-				} 
+					console.log(cat, newName, newURL, newClicks);
+
+					if (cat) {
+						cat = octopus.setCatName(cat, newName);
+						octopus.setClickCounter(cat, newClicks);
+						octopus.setCatURL(cat, newURL);
+						console.log(octopus.getAllCats());
+					} 
+
+					$('#admin-name').val(null),
+					$('#admin-url').val(null),
+					$('#admin-clicks').val(null);
+				}
 			});
 			
 		},
